@@ -75,6 +75,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
 }
 
 .dark {
@@ -119,6 +121,8 @@
     @apply bg-background text-foreground;
     overflow-x: hidden;
     overflow-y: auto;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
   }
   /* Hide horizontal scrollbar but keep vertical scrollbar */
   ::-webkit-scrollbar {
@@ -134,5 +138,27 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+}
+
+/* Basic responsive styles */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }

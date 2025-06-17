@@ -29,20 +29,20 @@ const ScrollStack = () => {
     return (
         <div className="relative w-full">
             {sectionsData.map((section, index) => (
-                <div key={index} className={`sticky top-20 w-[90vw] m-auto mt-10 rounded-xl flex items-center justify-between p-20 ${index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-50'}`} style={{ zIndex: index }}>
-                    <div className="w-1/2 pr-10">
-                        <h2 className={`text-6xl font-bold mb-6 ${index % 2 === 0 ? 'text-blue-900' : 'text-blue-800'}`}>
+                <div key={index} className={`sticky top-20 w-[90vw] m-auto mt-10 rounded-xl flex flex-col sm:flex-row items-center justify-between p-6 sm:p-12 md:p-20 ${index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-50'}`} style={{ zIndex: index }}>
+                    <div className="w-full sm:w-1/2 sm:pr-10 mb-6 sm:mb-0">
+                        <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 ${index % 2 === 0 ? 'text-blue-900' : 'text-blue-800'}`}>
                             {section.title}
                         </h2>
-                        <p className={`text-xl mb-8 ${index % 2 === 0 ? 'text-blue-800' : 'text-blue-700'}`}>
+                        <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 ${index % 2 === 0 ? 'text-blue-800' : 'text-blue-700'}`}>
                             {section.description}
                         </p>
-                        <div className="flex flex-wrap gap-3 mb-6">
+                        <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
                             {section.tags.map((tag, tagIndex) => (
                                 <Badge
                                     key={tagIndex}
                                     variant="outline"
-                                    className={`${index % 2 === 0
+                                    className={`text-sm sm:text-base ${index % 2 === 0
                                         ? 'bg-blue-200 text-blue-800 border-blue-300 hover:bg-blue-300'
                                         : 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200'}`}
                                 >
@@ -50,12 +50,12 @@ const ScrollStack = () => {
                                 </Badge>
                             ))}
                         </div>
-                        <p className={`text-sm ${index % 2 === 0 ? 'text-blue-600' : 'text-blue-500'}`}>
+                        <p className={`text-sm sm:text-base ${index % 2 === 0 ? 'text-blue-600' : 'text-blue-500'}`}>
                             {section.duration}
                         </p>
                     </div>
 
-                    <div className="w-1/2">
+                    <div className="w-full sm:w-1/2">
                         <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-200">
                             <img 
                                 src={section.imageUrl} 
