@@ -7,21 +7,21 @@ const sectionsData = [
         description: "Experience the thrill of driving premium vehicles with our luxury car rental service. Perfect for special occasions and business trips.",
         tags: ["Premium", "Comfort", "Business"],
         duration: "Available for 24/7 rental",
-        imageUrl: "/luxury-car.jpg"
+        imageUrl: "/luxury.jpg"
     },
     {
         title: "Adventure Bikes",
         description: "Explore the city on two wheels with our range of adventure bikes. Perfect for urban exploration and weekend getaways.",
         tags: ["Adventure", "Urban", "Eco-friendly"],
         duration: "Flexible rental periods",
-        imageUrl: "/adventure-bike.jpg"
+        imageUrl: "/adventure.jpg"
     },
     {
         title: "Family Vehicles",
         description: "Spacious and comfortable vehicles perfect for family trips. Safety and comfort guaranteed for your loved ones.",
         tags: ["Family", "Spacious", "Safe"],
         duration: "Weekly and monthly rentals available",
-        imageUrl: "/family-car.jpg"
+        imageUrl: "/family.jpg"
     }
 ]
 
@@ -57,7 +57,11 @@ const ScrollStack = () => {
 
                     <div className="w-1/2">
                         <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-200">
-                            {/* Placeholder for image */}
+                            <img 
+                                src={section.imageUrl} 
+                                alt={section.title}
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                     </div>
                 </div>

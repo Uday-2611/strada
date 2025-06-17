@@ -19,10 +19,10 @@ const Dashboard = () => {
     return (
         <div className='w-full min-h-screen bg-white'>
             {/* Hero Section */}
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>
-                <div className='flex flex-col lg:flex-row gap-12 items-center'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
+                <div className='flex flex-col lg:flex-row gap-6 items-center'>
                     <div className='lg:w-1/2 space-y-6'>
-                        <h1 className='text-5xl font-bold text-gray-900 leading-tight'>
+                        <h1 className='text-6xl font-bold text-gray-900 leading-tight'>
                             Rent. Drive. Explore.
                         </h1>
                         <p className='text-lg text-gray-600 leading-relaxed'>
@@ -33,8 +33,8 @@ const Dashboard = () => {
                         </Button>
                     </div>
                     <div className='lg:w-1/2'>
-                        <div className='bg-gray-900 w-full aspect-square rounded-2xl relative overflow-hidden'>
-                            <div className='absolute bottom-8 right-8 w-[280px] bg-white p-6 rounded-xl shadow-lg'>
+                        <div className='bg-gray-900 w-full aspect-square rounded-2xl relative overflow-hidden bg-cover bg-center bg-no-repeat' style={{ backgroundImage: 'url("/dashboard.jpg")' }}>
+                            <div className='absolute bottom-8 right-8 w-[280px] p-6 rounded-xl shadow-lg bg-white-300 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-100 '>
                                 <div className='flex gap-1 text-yellow-400 mb-3'>
                                     <i className="ri-star-s-fill"></i>
                                     <i className="ri-star-s-fill"></i>
@@ -42,7 +42,7 @@ const Dashboard = () => {
                                     <i className="ri-star-s-fill"></i>
                                     <i className="ri-star-s-fill"></i>
                                 </div>
-                                <p className='text-gray-600 text-sm leading-relaxed'>
+                                <p className='text-white text-sm leading-relaxed'>
                                     Strada has completely transformed how I travel. The seamless booking, quality vehicles, and premium service make it my go-to choice every time.
                                 </p>
                             </div>
