@@ -21,13 +21,14 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-center w-full py-6 px-4">
-      <div className="flex items-center justify-between px-6 py-3 bg-white rounded-full shadow-lg w-full max-w-3xl relative z-10">
+      <div className="flex items-center justify-between px-6 py-1 bg-white rounded-full shadow-lg w-full max-w-3xl relative z-10">
         <div className="flex items-center">
-          <div className="cursor-pointer" onClick={() => router.push('/dashboard')}  >
-            <h1 className='text-xl sm:text-2xl font-bold'>
-              Strada
-            </h1>
-          </div>
+          <img
+            src="/logoBlack.png"
+            alt="Strada Logo"
+            className="h-14 w-auto object-contain cursor-pointer"
+            onClick={() => router.push('/dashboard')}
+          />
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">

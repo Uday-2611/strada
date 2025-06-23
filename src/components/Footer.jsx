@@ -131,17 +131,17 @@ const Footer = () => {
                 <div className='border-t border-gray-200 mt-16 pt-8'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
                         <div className='flex items-center gap-2'>
-                            <h1 className='text-2xl font-bold text-blue-600'>Strada</h1>
+                            <h1 className='text-2xl font-bold '>Strada</h1>
                             <p className='text-gray-600'>© 2024 Strada. All rights reserved.</p>
                         </div>
                         <ul className='flex gap-8'>
-                            <li className='text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-200'>
+                            <li className='text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200'>
                                 Privacy Policy
                             </li>
-                            <li className='text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-200'>
+                            <li className='text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200'>
                                 Terms of Service
                             </li>
-                            <li className='text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-200'>
+                            <li className='text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200'>
                                 Cookie Policy
                             </li>
                         </ul>
