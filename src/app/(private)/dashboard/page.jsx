@@ -12,6 +12,41 @@ import { Badge } from "@/components/ui/badge"
 import ScrollStack from '@/components/ScrollStack'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import TestimonialCard from '@/components/TestimonialCard'
+import { InfiniteMovingCards } from '@/components/infinite-moving-cards'
+
+const testimonials = [
+    {
+        name: "Alex Johnson",
+        title: "Weekend Renter",
+        quote: "The booking process was incredibly smooth and the car was in perfect condition. Made our weekend trip so much better!",
+        avatar: "https://i.pravatar.cc/150?u=alexjohnson",
+    },
+    {
+        name: "Samantha Miller",
+        title: "Business Traveler",
+        quote: "Reliable service and professional staff. I rent for business frequently and Strada has never let me down. Highly recommend.",
+        avatar: "https://i.pravatar.cc/150?u=samanthamiller",
+    },
+    {
+        name: "David Chen",
+        title: "Adventure Seeker",
+        quote: "Rented a bike for a solo trip through the mountains. The equipment was top-notch and the support team was very helpful.",
+        avatar: "https://i.pravatar.cc/150?u=davidchen",
+    },
+    {
+        name: "Jessica Taylor",
+        title: "First-Time Renter",
+        quote: "As a first-time renter, I was nervous, but Strada made it so easy. The instructions were clear, and the car was perfect for my needs. I'll be back!",
+        avatar: "https://i.pravatar.cc/150?u=jessicataylor",
+    },
+    {
+        name: "Mark Wilson",
+        title: "City Commuter",
+        quote: "The monthly bike rental is a game-changer for my commute. It's affordable, reliable, and much more fun than taking the bus. Great service!",
+        avatar: "https://i.pravatar.cc/150?u=markwilson",
+    },
+];
 
 const Dashboard = () => {
     const router = useRouter();
@@ -20,68 +55,71 @@ const Dashboard = () => {
         <div className='w-full min-h-screen bg-white'>
             {/* Hero Section */}
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
-                <div className='flex flex-col lg:flex-row gap-6 items-center'>
-                    <div className='lg:w-1/2 space-y-6'>
-                        <h1 className='text-6xl font-bold text-gray-900 leading-tight'>
-                            Rent. Drive. Explore.
+                <div className='flex flex-col lg:flex-col mt-14 gap-6 items-center m-auto '>
+                    <div className=' text-center space-y-8'>
+                        <h1 className='text-8xl font-bold text-gray-900 leading-tight'>
+                            Your Journey, Your Wheels.
                         </h1>
-                        <p className='text-lg text-gray-600 leading-relaxed'>
-                            Fast, secure rentals for cars and bikes—book your perfect ride anytime, anywhere with ease.
+                        <p className='text-xl text-gray-600 leading-relaxed'>
+                            Unlock your next adventure with fast, secure rentals for cars and bikes. Seamlessly book your perfect ride for any journey, available anytime and anywhere with just a few clicks.
                         </p>
-                        <Button className='text-white px-8 py-6 text-lg' onClick={() => router.push('/vehicles')}>
-                            Get Started
-                        </Button>
+                        <div className='flex space-x-4'>
+                            <Button className='text-white px-8 py-6 text-lg m-auto h-12' onClick={() => router.push('/vehicles')}>
+                                Get Started
+                            </Button>
+                        </div>
                     </div>
-                    <div className='lg:w-1/2'>
-                        <div className='bg-gray-900 w-full aspect-square rounded-2xl relative overflow-hidden bg-cover bg-center bg-no-repeat' style={{ backgroundImage: 'url("/dashboard.jpg")' }}>
-                            <div className='absolute bottom-8 right-8 w-[280px] p-6 rounded-xl shadow-lg bg-white-300 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-100 '>
-                                <div className='flex gap-1 text-yellow-400 mb-3'>
-                                    <i className="ri-star-s-fill"></i>
-                                    <i className="ri-star-s-fill"></i>
-                                    <i className="ri-star-s-fill"></i>
-                                    <i className="ri-star-s-fill"></i>
-                                    <i className="ri-star-s-fill"></i>
-                                </div>
-                                <p className='text-white text-sm leading-relaxed'>
-                                    Strada has completely transformed how I travel. The seamless booking, quality vehicles, and premium service make it my go-to choice every time.
-                                </p>
-                            </div>
+                    <div className='lg:w-3/4'>
+                        <div className='bg-gray-900 w-full aspect-video rounded-2xl relative overflow-hidden'>
+                            <img src="/dashboard.jpeg" alt="Strada Dashboard" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className='py-20'>
-                <ScrollStack />
-            </div>
-
-            {/* About Section */}
-            <div className='bg-gray-50 py-20'>
-                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <div className='flex flex-col lg:flex-row gap-12 items-center'>
-                        <div className='lg:w-1/2 space-y-6'>
-                            <Badge className='bg-blue-100 text-blue-600 hover:bg-blue-100'>
+            <div className='py-20 px-4 sm:px-6 lg:px-8 '>
+                <div className='max-w-7xl mx-auto flex flex-col gap-20'>
+                    {/* About Section */}
+                    <div className='flex flex-col lg:flex-row gap-12 items-start mt-24'>
+                        <div className='w-full lg:w-1/3 space-y-4'>
+                            <Badge>
                                 About Us
                             </Badge>
-                            <h2 className='text-4xl font-bold text-gray-900'>
-                                Modern travel solutions provider
+                            <h2 className='text-4xl md:text-4xl font-bold text-gray-900'>
+                                Your Trusted Partner in Mobility
                             </h2>
                         </div>
-                        <div className='lg:w-1/2'>
-                            <p className='text-gray-600 leading-relaxed'>
-                                Welcome to Strada, your trusted rental partner, dedicated to providing reliable vehicles with ease and confidence. With a wide range of bikes and cars for every journey, we take pride in offering a smooth booking experience and dependable rides. Our mission is to keep you moving—whether it's a weekend getaway or a daily commute—with transparent pricing and support you can count on. Let's drive forward together!
+                        <div className='w-full lg:w-2/3'>
+                            <p className='text-gray-600 text-lg leading-relaxed'>
+                                At Strada, we are dedicated to providing a seamless and reliable rental experience. Our diverse fleet of cars and bikes is meticulously maintained to ensure your safety and comfort on the road. We believe in making travel accessible, enjoyable, and hassle-free for everyone. Our mission is to empower you to explore with confidence, offering a vehicle for every occasion—from daily commutes to adventurous getaways. With a focus on exceptional customer service and transparent pricing, we handle the details so you can enjoy the journey.
                             </p>
                         </div>
+                    </div>
+
+                    {/* ScrollStack Section */}
+                    <div className='w-full space-y-12 mt-24'>
+                        <div className='text-center space-y-4'>
+                            <Badge>
+                                Our Collection
+                            </Badge>
+                            <h2 className='text-4xl md:text-4xl font-bold text-gray-900'>
+                                Find Your Perfect Ride
+                            </h2>
+                            <p className='text-gray-600 text-lg leading-relaxed max-w-2xl mx-auto'>
+                                From luxury sedans for a classy night out to rugged bikes for an off-road adventure, we have the perfect vehicle for any occasion. Browse our collection and book your next journey today.
+                            </p>
+                        </div>
+                        <ScrollStack />
                     </div>
                 </div>
             </div>
 
             {/* FAQ Section */}
-            <div className='py-20'>
-                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+            <div className='bg-gray-50 py-20'>
+                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24'>
                     <div className='flex flex-col lg:flex-row gap-12'>
                         <div className='lg:w-1/2 space-y-6'>
-                            <Badge className='bg-blue-100 text-blue-600 hover:bg-blue-100'>
+                            <Badge>
                                 FAQ
                             </Badge>
                             <h2 className='text-4xl font-bold text-gray-900'>
@@ -136,8 +174,21 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Testimonials Section */}
+            <div className='py-20'>
+                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center mt-24'>
+                    <h1 className='text-4xl md:text-4xl font-bold text-gray-900 text-center mb-12'>
+                        Trusted by thousands of users nationwide
+                    </h1>
+                    <InfiniteMovingCards items={testimonials} direction="right" speed="slow" />
+                </div>
+            </div>
+
         </div>
     )
 }
+
+
 
 export default Dashboard

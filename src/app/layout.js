@@ -10,7 +10,7 @@ import { AuthProvider } from "@/components/context/AuthProvider";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gray-50">
         <AuthProvider>
           {children}
         </AuthProvider>

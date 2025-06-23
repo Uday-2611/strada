@@ -1,13 +1,10 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
 import { toast } from 'sonner'
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -109,7 +106,6 @@ const ProfilePage = () => {
         fetchBookings()
     }, [user])
 
-    // Handle profile update
     const handleProfileUpdate = async (e) => {
         e.preventDefault()
         
@@ -138,7 +134,6 @@ const ProfilePage = () => {
         }
     }
 
-    // Handle password update
     const handlePasswordUpdate = async (e) => {
         e.preventDefault()
 
@@ -181,16 +176,15 @@ const ProfilePage = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
             <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-gray-900">Welcome, {profile.full_name || 'User'}</h1>
+                <h1 className="text-4xl font-bold text-gray-900">Welcome, {profile.full_name || 'User'}</h1>
                 <p className="text-gray-600 max-w-2xl">
                     Your dashboard puts your bookings and details up front. Quickly check upcoming rentals, manage profile info, and see how many rides you've enjoyed.
                 </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 mt-20">
                 <h2 className="text-xl font-semibold">Recent Bookings</h2>
                 <Table>
-                    <TableCaption>A list of your recent bookings.</TableCaption>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[100px]">Vehicle Name</TableHead>
@@ -232,10 +226,10 @@ const ProfilePage = () => {
                 <Button onClick={() => router.push('/bookings')}>View All Bookings</Button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 mt-20">
                 <h2 className="text-xl font-semibold">Profile Overview</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Card>
+                    <Card className='border-none bg-gray-100'>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <i className="ri-calendar-line text-blue-600"></i>
@@ -250,7 +244,7 @@ const ProfilePage = () => {
                             </p>
                         </CardContent>
                     </Card>
-                    <Card>
+                    <Card className='border-none bg-gray-100'>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <i className="ri-car-line text-blue-600"></i>
@@ -265,7 +259,7 @@ const ProfilePage = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="bg-blue-50">
+                <Card className="bg-blue-50 border-none">
                     <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-2">
                             <i className="ri-flashlight-line text-2xl text-blue-600"></i>
@@ -273,7 +267,7 @@ const ProfilePage = () => {
                         </div>
                     </CardContent>
                 </Card>
-                <Card className="bg-green-50">
+                <Card className="bg-green-50 border-none">
                     <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-2">
                             <i className="ri-cash-line text-2xl text-green-600"></i>
@@ -281,7 +275,7 @@ const ProfilePage = () => {
                         </div>
                     </CardContent>
                 </Card>
-                <Card className="bg-purple-50">
+                <Card className="bg-purple-50 border-none">
                     <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-2">
                             <i className="ri-service-line text-2xl text-purple-600"></i>
@@ -289,7 +283,7 @@ const ProfilePage = () => {
                         </div>
                     </CardContent>
                 </Card>
-                <Card className="bg-orange-50">
+                <Card className="bg-orange-50 border-none">
                     <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-2">
                             <i className="ri-global-line text-2xl text-orange-600"></i>
@@ -303,7 +297,7 @@ const ProfilePage = () => {
 
             <div className="space-y-6">
                 <h2 className="text-xl font-semibold">Edit Profile</h2>
-                <Card>
+                <Card className="bg-gray-100 border-none">
                     <CardContent className="pt-6">
                         <form onSubmit={handleProfileUpdate} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -314,6 +308,7 @@ const ProfilePage = () => {
                                         placeholder="Enter your full name"
                                         value={profile.full_name}
                                         onChange={(e) => setProfile(prev => ({ ...prev, full_name: e.target.value }))}
+                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -323,6 +318,7 @@ const ProfilePage = () => {
                                         type="email" 
                                         value={profile.email}
                                         disabled
+                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
                                     />
                                 </div>
                             </div>
@@ -333,6 +329,7 @@ const ProfilePage = () => {
                                     placeholder="Enter your home address"
                                     value={profile.address}
                                     onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))}
+                                    className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
                                 />
                             </div>
                             <div className="flex justify-end">
@@ -355,6 +352,7 @@ const ProfilePage = () => {
                                         placeholder="Enter current password"
                                         value={passwords.current}
                                         onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))}
+                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -365,6 +363,7 @@ const ProfilePage = () => {
                                         placeholder="Enter new password"
                                         value={passwords.new}
                                         onChange={(e) => setPasswords(prev => ({ ...prev, new: e.target.value }))}
+                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
                                     />
                                 </div>
                             </div>

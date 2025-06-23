@@ -1,71 +1,64 @@
+"use client"
 import React from 'react'
 import { Badge } from "@/components/ui/badge"
+import { ExpandableCard } from './ExpandableCard';
 
 const sectionsData = [
     {
         title: "Luxury Cars",
-        description: "Experience the thrill of driving premium vehicles with our luxury car rental service. Perfect for special occasions and business trips.",
+        shortDescription: "Drive in style with our premium luxury cars for any occasion.",
+        detailedDescription: "Experience the thrill of driving premium vehicles with our luxury car rental service. Perfect for special occasions, business trips, or simply to enjoy the finest in automotive engineering. Our fleet is meticulously maintained to ensure your comfort, safety, and a memorable driving experience.",
         tags: ["Premium", "Comfort", "Business"],
-        duration: "Available for 24/7 rental",
-        imageUrl: "/luxury.jpg"
+        imageUrl: "/luxury.jpeg"
     },
     {
         title: "Adventure Bikes",
-        description: "Explore the city on two wheels with our range of adventure bikes. Perfect for urban exploration and weekend getaways.",
+        shortDescription: "Explore the city's hidden gems on our agile adventure bikes.",
+        detailedDescription: "Explore the city on two wheels with our range of adventure bikes. Perfect for urban exploration and weekend getaways, these bikes offer a thrilling mix of performance and convenience. They are an eco-friendly and exciting way to navigate bustling city streets and discover new paths.",
         tags: ["Adventure", "Urban", "Eco-friendly"],
-        duration: "Flexible rental periods",
         imageUrl: "/adventure.jpg"
     },
     {
         title: "Family Vehicles",
-        description: "Spacious and comfortable vehicles perfect for family trips. Safety and comfort guaranteed for your loved ones.",
+        shortDescription: "Spacious, safe, and comfortable vehicles for your next family trip.",
+        detailedDescription: "Our spacious and comfortable vehicles are perfect for family trips, ensuring safety and comfort for your loved ones. Each vehicle comes equipped with modern safety features, ample storage space, and entertainment options to make your family journey a pleasant and worry-free experience.",
         tags: ["Family", "Spacious", "Safe"],
-        duration: "Weekly and monthly rentals available",
         imageUrl: "/family.jpg"
     }
 ]
 
 const ScrollStack = () => {
+    const cards = sectionsData.map((section, index) => ({
+        title: section.title,
+        description: section.shortDescription,
+        src: section.imageUrl,
+        ctaText: "Details",
+        ctaLink: "#",
+        content: () => (
+            <div>
+                <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 ${index % 2 === 0 ? 'text-gray-800' : 'text-gray-700'}`}>
+                    {section.detailedDescription}
+                </p>
+                <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
+                    {section.tags.map((tag, tagIndex) => (
+                        <Badge
+                            key={tagIndex}
+                            variant="outline"
+                            className={`text-sm sm:text-base ${index % 2 === 0
+                                ? 'bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300'
+                                : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}
+                        >
+                            {tag}
+                        </Badge>
+                    ))}
+                </div>
+            </div>
+        )
+    }));
+
     return (
         <div className="relative w-full">
-            {sectionsData.map((section, index) => (
-                <div key={index} className={`sticky top-20 w-[90vw] m-auto mt-10 rounded-xl flex flex-col sm:flex-row items-center justify-between p-6 sm:p-12 md:p-20 ${index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-50'}`} style={{ zIndex: index }}>
-                    <div className="w-full sm:w-1/2 sm:pr-10 mb-6 sm:mb-0">
-                        <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 ${index % 2 === 0 ? 'text-blue-900' : 'text-blue-800'}`}>
-                            {section.title}
-                        </h2>
-                        <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 ${index % 2 === 0 ? 'text-blue-800' : 'text-blue-700'}`}>
-                            {section.description}
-                        </p>
-                        <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
-                            {section.tags.map((tag, tagIndex) => (
-                                <Badge
-                                    key={tagIndex}
-                                    variant="outline"
-                                    className={`text-sm sm:text-base ${index % 2 === 0
-                                        ? 'bg-blue-200 text-blue-800 border-blue-300 hover:bg-blue-300'
-                                        : 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200'}`}
-                                >
-                                    {tag}
-                                </Badge>
-                            ))}
-                        </div>
-                        <p className={`text-sm sm:text-base ${index % 2 === 0 ? 'text-blue-600' : 'text-blue-500'}`}>
-                            {section.duration}
-                        </p>
-                    </div>
-
-                    <div className="w-full sm:w-1/2">
-                        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-200">
-                            <img 
-                                src={section.imageUrl} 
-                                alt={section.title}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                    </div>
-                </div>
-            ))}
+            <ExpandableCard cards={cards} />
         </div>
     )
 }

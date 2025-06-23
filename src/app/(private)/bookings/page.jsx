@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { Input } from "@/components/ui/input"
 
 const BookingsPage = () => {
 
@@ -39,8 +40,8 @@ const BookingsPage = () => {
     const router = useRouter()
     const [bookings, setBookings] = useState([])
     const [loading, setLoading] = useState(true)
-    const [filterStatus, setFilterStatus] = useState('all') // 'all', 'confirmed', 'completed', 'cancelled'
-    const [sortBy, setSortBy] = useState('created_at_desc') // 'created_at_desc', 'pickup_date_asc', etc.
+    const [filterStatus, setFilterStatus] = useState('all')
+    const [sortBy, setSortBy] = useState('created_at_desc')
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -81,7 +82,7 @@ const BookingsPage = () => {
         }
 
         fetchBookings()
-    }, [user, filterStatus, sortBy]) // Depend on filterStatus and sortBy
+    }, [user, filterStatus, sortBy]) 
 
     const handleCancelBooking = async (bookingId) => {
         if (!user) {
@@ -149,7 +150,7 @@ const BookingsPage = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
             <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-gray-900">Your Bookings</h1>
+                <h1 className="text-4xl font-bold text-gray-900">Your Bookings</h1>
                 <p className="text-gray-600 max-w-2xl">
                     View and manage all your vehicle bookings. Track your current rentals and view your booking history.
                 </p>
@@ -171,7 +172,7 @@ const BookingsPage = () => {
                                     <Label htmlFor="filter-status">Filter by Status</Label>
                                     <Select value={filterStatus} onValueChange={setFilterStatus}>
                                         <SelectTrigger id="filter-status">
-                                            <SelectValue placeholder="Select a status" />
+                                            <SelectValue placeholder="Select a status"/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="all">All</SelectItem>
@@ -239,11 +240,7 @@ const BookingsPage = () => {
                                         <div className="flex justify-end gap-2">
                                             <Button variant="outline" size="sm" onClick={() => router.push(`/order?booking_id=${booking.id}`)}>View Details</Button>
                                             {booking.status === 'confirmed' && (
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => handleCancelBooking(booking.id)}
-                                                >
+                                                <Button variant="destructive" size="sm" onClick={() => handleCancelBooking(booking.id)}>
                                                     Cancel
                                                 </Button>
                                             )}
@@ -252,9 +249,6 @@ const BookingsPage = () => {
                                 </TableRow>
                             ))
                         )}
-
-
-
                     </TableBody>
                 </Table>
             </div>

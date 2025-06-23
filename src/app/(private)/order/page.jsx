@@ -191,9 +191,9 @@ const page = () => {
       <div className='flex gap-6 max-w-7xl mx-auto'>
         {/* Left Section - Order and Billing Details */}
         <div className='w-1/2 space-y-6'>
-          <Card>
+          <Card className="bg-gray-100 border-none">
             <CardHeader>
-              <CardTitle>Order Details</CardTitle>
+              <CardTitle className='text-xl'>Order Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -226,20 +226,20 @@ const page = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-gray-100 border-none">
             <CardHeader>
-              <CardTitle>Billing Details</CardTitle>
+              <CardTitle className='text-xl'>Billing Details</CardTitle>
               <CardDescription>Please confirm your billing information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="fullname">Full Name</Label>
-                  <Input id="fullname" value={billingDetails.full_name} disabled />
+                  <Input id="fullname" value={billingDetails.full_name} disabled className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" value={billingDetails.email} disabled />
+                  <Input id="email" type="email" value={billingDetails.email} disabled className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 </div>
               </div>
 
@@ -251,19 +251,20 @@ const page = () => {
                   placeholder="+91 98765 43210"
                   value={billingDetails.phone}
                   onChange={(e) => setBillingDetails(prev => ({ ...prev, phone: e.target.value }))}
+                  className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" value={billingDetails.address} disabled />
+                <Input id="address" value={billingDetails.address} disabled className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-gray-100 border-none">
             <CardHeader>
-              <CardTitle>Payment Method</CardTitle>
+              <CardTitle className='text-xl'>Payment Method</CardTitle>
               <CardDescription>Choose your preferred payment method</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -287,9 +288,9 @@ const page = () => {
 
         {/* Right Section - Order Summary */}
         <div className='w-1/2 space-y-6'>
-          <Card>
+          <Card className="bg-gray-100 border-none">
             <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+              <CardTitle className='text-xl'>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="aspect-video bg-muted rounded-lg flex items-center justify-center overflow-hidden">

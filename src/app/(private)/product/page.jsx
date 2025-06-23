@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import useAuth from '@/hooks/useAuth'
 import { toast } from 'sonner'
 import client from '@/api/client'
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 
 const ProductPage = () => {
   const router = useRouter()
@@ -98,7 +99,7 @@ const ProductPage = () => {
       const dropoff = new Date(bookingDetails.dropoff_date)
       const diffTime = Math.abs(dropoff.getTime() - pickup.getTime())
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-      
+
       const calculatedBaseAmount = diffDays * vehicle.price_per_day;
       const calculatedTotalAmount = calculatedBaseAmount * 1.18; // Add 18% GST
 
@@ -109,13 +110,13 @@ const ProductPage = () => {
         total_amount: calculatedTotalAmount
       }))
     } else if (vehicle) {
-        // Reset total_amount and total_days if dates are not valid but vehicle is loaded
-        setBookingDetails(prev => ({
-            ...prev,
-            total_days: 0,
-            base_amount: 0,
-            total_amount: 0
-        }))
+      // Reset total_amount and total_days if dates are not valid but vehicle is loaded
+      setBookingDetails(prev => ({
+        ...prev,
+        total_days: 0,
+        base_amount: 0,
+        total_amount: 0
+      }))
     }
   }, [bookingDetails.pickup_date, bookingDetails.dropoff_date, vehicle])
 
@@ -131,8 +132,8 @@ const ProductPage = () => {
     }
 
     if (new Date(bookingDetails.pickup_date) >= new Date(bookingDetails.dropoff_date)) {
-        toast.error('Drop-off date must be after pickup date')
-        return
+      toast.error('Drop-off date must be after pickup date')
+      return
     }
 
     if (!bookingDetails.pickup_location.trim() || !bookingDetails.dropoff_location.trim()) {
@@ -251,39 +252,50 @@ const ProductPage = () => {
       <div className='flex gap-6 max-w-7xl mx-auto'>
         {/* Left Section - Product Image and Basic Info */}
         <div className='w-1/2 space-y-6'>
-          <Card>
-            <CardContent className="p-6">
-              <div className='w-full aspect-video bg-muted rounded-lg flex items-center justify-center'>
-                {vehicle.images && vehicle.images[0] ? (
-                  <img src={vehicle.images[0]} alt={vehicle.name} className='w-full h-full object-cover rounded-lg' />
-                ) : (
-                  <span className="text-muted-foreground">Product Image</span>
-                )}
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card>
+          <div className='w-full aspect-video bg-muted rounded-lg flex items-center justify-center'>
+            {vehicle.images && vehicle.images[0] ? (
+              <img src={vehicle.images[0]} alt={vehicle.name} className='w-full h-full object-cover rounded-lg' />
+            ) : (
+              <span className="text-muted-foreground">Product Image</span>
+            )}
+          </div>
+
+          <Card className='bg-gray-100 border-none'>
             <CardHeader>
-              <CardTitle>{vehicle.name}</CardTitle>
-              <CardDescription>{vehicle.type} • {vehicle.seats} Seats • {vehicle.transmission}</CardDescription>
+              <CardTitle className='text-4xl font-semibold' >{vehicle.name}</CardTitle>
+              <CardDescription className='text-lg' >{vehicle.type} • {vehicle.seats} Seats • {vehicle.transmission}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex gap-2 flex-wrap">
-                <Badge variant="secondary">4.5 ★</Badge>
+              <div className="flex gap-2 flex-wrap ">
+                <Badge variant="secondary" className=' bg-yellow-500'>4.5 ★</Badge>
                 {vehicle.features?.map((feature, index) => (
                   <Badge key={index} variant='secondary' >{feature}</Badge>
                 ))}
               </div>
             </CardContent>
           </Card>
+
+          <Accordion type="single" collapsible className="w-full mb-4 bg-red-100 px-4 rounded-md">
+            <AccordionItem value="important-info">
+              <AccordionTrigger className="text-base font-semibold text-red-600">Important Information</AccordionTrigger>
+              <AccordionContent className="bg-red-50 border-l-4 border-red-400 p-4 mb-4 rounded-md">
+                <ul className="list-disc list-inside space-y-2 text-sm text-red-700">
+                  <li>Minimum permissible age for renting is 21 years</li>
+                  <li>Driving license should be minimum one year old as on the rental start date</li>
+                  <li>Some vehicles may be speed limited to 80 km/hr for safety</li>
+                  <li>Please read the policy on Inter State tax under Terms & Conditions</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
 
         {/* Right Section - Booking Details */}
         <div className='w-1/2 space-y-6'>
-          <Card>
+          <Card className='bg-gray-100 border-none'>
             <CardHeader>
-              <CardTitle>Book Now</CardTitle>
+              <CardTitle className='text-xl'>Book Now</CardTitle>
               <CardDescription>Select your rental period</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -296,6 +308,7 @@ const ProductPage = () => {
                     value={bookingDetails.pickup_date}
                     onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_date: e.target.value }))}
                     min={new Date().toISOString().split('T')[0]}
+                    className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </div>
                 <div className="space-y-2">
@@ -306,6 +319,7 @@ const ProductPage = () => {
                     value={bookingDetails.dropoff_date}
                     onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_date: e.target.value }))}
                     min={bookingDetails.pickup_date || new Date().toISOString().split('T')[0]}
+                    className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </div>
               </div>
@@ -317,6 +331,7 @@ const ProductPage = () => {
                   placeholder="Enter pickup location"
                   value={bookingDetails.pickup_location}
                   onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_location: e.target.value }))}
+                  className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>
 
@@ -327,6 +342,7 @@ const ProductPage = () => {
                   placeholder="Enter drop-off location"
                   value={bookingDetails.dropoff_location}
                   onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_location: e.target.value }))}
+                  className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>
 
@@ -351,37 +367,21 @@ const ProductPage = () => {
                 </div>
               </div>
 
-              <Button
-                className="w-full"
-                onClick={handleBooking}
-                disabled={!bookingDetails.pickup_date || !bookingDetails.dropoff_date || !bookingDetails.pickup_location.trim() || !bookingDetails.dropoff_location.trim() || bookingDetails.total_days <= 0}
-              >
+              <Button className="w-full bg-green-500 h-12" onClick={handleBooking} disabled={!bookingDetails.pickup_date || !bookingDetails.dropoff_date || !bookingDetails.pickup_location.trim() || !bookingDetails.dropoff_location.trim() || bookingDetails.total_days <= 0} >
                 Confirm Booking
               </Button>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Important Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                <li>Minimum permissible age for renting is 21 years</li>
-                <li>Driving license should be minimum one year old as on the rental start date</li>
-                <li>Some vehicles may be speed limited to 80 km/hr for safety</li>
-                <li>Please read the policy on Inter State tax under Terms & Conditions</li>
-              </ul>
-            </CardContent>
-          </Card>
+
         </div>
       </div>
 
       {/* Reviews Section */}
       <div className="max-w-7xl mx-auto mt-12">
-        <Card>
+        <Card className="bg-gray-100 border-none">
           <CardHeader>
-            <CardTitle>Reviews</CardTitle>
+            <CardTitle className='text-xl'>Reviews</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="reviews">
@@ -423,10 +423,11 @@ const ProductPage = () => {
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Button
                             key={star}
-                            variant={newReview.rating >= star ? "default" : "outline"}
+                            variant="ghost"
+                            className={`rounded-full ${newReview.rating >= star ? 'text-yellow-500' : 'text-gray-400'}`}
                             onClick={() => setNewReview({ ...newReview, rating: star })}
                           >
-                            {star} ★
+                            ★
                           </Button>
                         ))}
                       </div>
@@ -439,13 +440,11 @@ const ProductPage = () => {
                         placeholder="Share your experience..."
                         value={newReview.comment}
                         onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                        className="bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                       />
                     </div>
 
-                    <Button
-                      onClick={handleSubmitReview}
-                      disabled={!newReview.comment.trim()}
-                    >
+                    <Button className='h-12 w-40' onClick={handleSubmitReview} disabled={!newReview.comment.trim()} >
                       Submit Review
                     </Button>
                   </div>

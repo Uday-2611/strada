@@ -68,15 +68,13 @@ const Footer = () => {
     };
 
     return (
-        <div className='bg-gray-50 rounded-t-3xl mt-20'>
+        <div className='bg-gray-50 rounded-t-3xl mt-24'>
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
                 <div className='flex flex-col lg:flex-row gap-12'>
                     <div className='lg:w-1/2 space-y-6'>
-                        <Badge className='bg-blue-100 text-blue-600 hover:bg-blue-100'>Contact</Badge>
-                        <h1 className='text-4xl font-bold text-gray-900'>Get in touch</h1>
-                        <p className='text-gray-600 leading-relaxed'>
-                            Have questions or ready to hit the road? Reach out directly — we're here to help you find the perfect ride and make your journey seamless.
-                        </p>
+                        <Badge>Contact</Badge>
+                        <h2 className='text-4xl font-bold text-gray-900'>Get in Touch</h2>
+                        <p className='text-gray-600 mt-4'>Have a question or need assistance? We're here to help.</p>
                         <p className='flex items-center gap-2 text-gray-600'>
                             <i className="ri-mail-line text-xl"></i> udayagarwal234@gmail.com
                         </p>
@@ -93,7 +91,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className='lg:w-1/2'>
-                        <Card className="w-full">
+                        <Card className="w-full bg-gray-100 border-none">
                             <CardHeader>
                                 <CardTitle className='text-2xl font-bold text-gray-900'>Send us a message</CardTitle>
                                 <CardDescription>We'll get back to you as soon as possible.</CardDescription>
@@ -102,63 +100,26 @@ const Footer = () => {
                                 <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor="name">Name</Label>
-                                        <Input
-                                            id="name"
-                                            name="name"
-                                            type="text"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder='Enter your name'
-                                        />
+                                        <Input id="name" name="name" type="text" value={formData.name} onChange={handleChange} required placeholder='Enter your name' className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor="email">Email</Label>
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder='Enter your email'
-                                        />
+                                        <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder='Enter your email' className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor="subject">Subject</Label>
-                                        <Input
-                                            id="subject"
-                                            name="subject"
-                                            type="text"
-                                            value={formData.subject}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder='Enter subject'
-                                        />
+                                        <Input id="subject" name="subject" type="text" value={formData.subject} onChange={handleChange} required placeholder='Enter subject' className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor="message">Message</Label>
-                                        <Textarea
-                                            id="message"
-                                            name="message"
-                                            value={formData.message}
-                                            onChange={handleChange}
-                                            required
-                                            rows={6}
-                                            placeholder='Enter your message'
-                                            className='min-h-[120px]'
-                                        />
+                                        <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder='Enter your message' className='min-h-[120px] bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0' />
                                     </div>
                                     {status.message && (
                                         <div className={`p-3 rounded-sm ${status.type === 'success' ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
                                             {status.message}
                                         </div>
                                     )}
-                                    <Button
-                                        type="submit"
-                                        disabled={isLoading}
-                                        className='w-full sm:w-auto px-6 py-3 mt-4'
-                                    >
+                                    <Button type="submit" disabled={isLoading} className='w-full sm:w-auto px-6 mt-4 h-12' >
                                         {isLoading ? 'Sending...' : 'Send Message'}
                                     </Button>
                                 </form>
