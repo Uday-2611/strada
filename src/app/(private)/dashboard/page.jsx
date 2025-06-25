@@ -57,7 +57,7 @@ const Dashboard = () => {
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
                 <div className='flex flex-col lg:flex-col mt-14 gap-6 items-center m-auto '>
                     <div className=' text-center space-y-8'>
-                        <h1 className='text-8xl font-bold text-gray-900 leading-tight'>
+                        <h1 className='text-8xl [font-family:var(--SupremeBold)] text-gray-900 leading-tight uppercase'>
                             Your Journey, Your Wheels.
                         </h1>
                         <p className='text-xl text-gray-600 leading-relaxed'>

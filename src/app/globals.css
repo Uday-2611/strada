@@ -1,8 +1,28 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-SemiBold.woff') format('opentype');
+}
+
+@font-face {
+  font-family: 'Nunito Light';
+  src: url('/fonts/Nunito-Light.woff') format('opentype');
+}
+
+@font-face {
+  font-family: 'Supreme Bold';
+  src: url('/fonts/Supreme-Bold.woff2') format('opentype');
+}
+
+@font-face {
+  font-family: 'Supreme';
+  src: url('/fonts/Supreme-Regular.woff') format('opentype');
+}
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -77,6 +97,10 @@
   --sidebar-ring: oklch(0.708 0 0);
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
+  --nunito: 'Nunito';
+  --nunitolight: 'Nunito Light';
+  --Supreme: 'Supreme';
+  --SupremeBold: 'Supreme Bold';
 }
 
 .dark {
@@ -117,6 +141,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
@@ -124,18 +149,22 @@
     color: rgb(var(--foreground-rgb));
     background: rgb(var(--background-rgb));
   }
+
   /* Hide horizontal scrollbar but keep vertical scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 0;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }

@@ -22,7 +22,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="[font-family:var(--nunito)]">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

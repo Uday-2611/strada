@@ -3,13 +3,14 @@
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import useAuth from '@/hooks/useAuth'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 const PrivatePagesLayout = ({ children }) => {
 
     const { user, loading } = useAuth()
     const router = useRouter()
+    const pathname = usePathname()
 
     useEffect(() => {
         if (!loading && !user) {
@@ -20,13 +21,15 @@ const PrivatePagesLayout = ({ children }) => {
 
     if (loading || !user) return null
 
+    const isAdminRoute = pathname.startsWith('/admin')
+
     return (
         <>
-            <Navbar />
+            {!isAdminRoute && <Navbar />}
             <div className="w-screen overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
-            <Footer />
+            {!isAdminRoute && <Footer />}
         </>
     )
 }

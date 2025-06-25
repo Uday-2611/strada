@@ -11,11 +11,13 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function ClientLayout({ children }) {
   return (
-    <div className={inter.className + " bg-gray-50"}>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
-      <Toaster />
-    </div>
+    <div className='bg-gray-50'>
+      <div>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+        <Toaster />
+      </div>
+    </div >
   );
 }

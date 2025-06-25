@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { loadStripe } from '@stripe/stripe-js'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,6 +13,8 @@ import { CreditCard, IndianRupee, Wallet } from 'lucide-react'
 import useAuth from '@/hooks/useAuth'
 import { toast } from 'sonner'
 import client from '@/api/client'
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const page = () => {
   const router = useRouter()
@@ -30,6 +33,11 @@ const page = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const sessionId = searchParams.get('session_id');
+    if (sessionId) {
+      toast.success('Payment successful! Your booking is being processed.');
+    }
+
     const fetchOrderData = async () => {
       if (!user) {
         setLoading(false)
@@ -127,7 +135,53 @@ const page = () => {
         return
     }
     
-    setLoading(true)
+    setLoading(true);
+
+    if (paymentMethod === 'Stripe') {
+      try {
+        const stripe = await stripePromise;
+        if (!stripe) {
+          toast.error("Stripe.js has not loaded yet.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            item: {
+              name: vehicle.name,
+              description: `Booking for ${vehicle.name} from ${new Date(booking.pickup_date).toLocaleDateString()} to ${new Date(booking.dropoff_date).toLocaleDateString()}`,
+              amount: Math.round(booking.total_amount * 100), // Amount in paise
+              quantity: 1,
+              booking_id: booking.id,
+            },
+          }),
+        });
+
+        const session = await response.json();
+        if (response.ok) {
+          const { error } = await stripe.redirectToCheckout({
+            sessionId: session.id,
+          });
+          if (error) {
+            toast.error(error.message);
+          }
+        } else {
+          toast.error(session.error.message);
+        }
+      } catch (error) {
+        console.error('Stripe payment error:', error)
+        toast.error('Failed to initiate Stripe payment.')
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     try {
         // Update phone number in profiles table
         const { error: profileUpdateError } = await client
@@ -273,10 +327,7 @@ const page = () => {
                   <CreditCard className="h-5 w-5" />
                   <span>Pay with Stripe</span>
                 </Button>
-                <Button className="w-full justify-start gap-2 h-12 bg-blue-600 hover:bg-blue-700" onClick={() => handlePayment('Razorpay')} disabled={loading}>
-                  <IndianRupee className="h-5 w-5" />
-                  <span>Pay with Razorpay</span>
-                </Button>
+                
                 <Button className="w-full justify-start gap-2 h-12 bg-green-500 hover:bg-green-600" onClick={() => handlePayment('Cash on Delivery')} disabled={loading}>
                   <Wallet className="h-5 w-5" />
                   <span>Cash on Delivery</span>
