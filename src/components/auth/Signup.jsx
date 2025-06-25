@@ -3,7 +3,6 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
-import { Sun } from 'lucide-react';
 import client from '@/api/client';
 
 const Signup = ({ toggleView }) => {

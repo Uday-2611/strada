@@ -1,38 +1,17 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { toast } from 'sonner'
 import client from '@/api/client'
 import useAuth from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
 
 const BookingsPage = () => {
 
@@ -52,10 +31,7 @@ const BookingsPage = () => {
 
             try {
                 setLoading(true)
-                let query = client.from('bookings').select(`
-                    *,
-                    vehicles(name, type)
-                `)
+                let query = client.from('bookings').select(` *, vehicles(name, type)`)
 
                 // Apply filter
                 if (filterStatus !== 'all') {
@@ -74,7 +50,6 @@ const BookingsPage = () => {
                 if (error) throw error
                 setBookings(data)
             } catch (error) {
-                console.log('Error fetching bookings - ', error)
                 toast.error('Error loading your bookings - ' + (error.message || 'Unknown error'))
             } finally {
                 setLoading(false)
@@ -82,7 +57,7 @@ const BookingsPage = () => {
         }
 
         fetchBookings()
-    }, [user, filterStatus, sortBy]) 
+    }, [user, filterStatus, sortBy])
 
     const handleCancelBooking = async (bookingId) => {
         if (!user) {
@@ -124,7 +99,7 @@ const BookingsPage = () => {
                 return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100';
             case 'completed':
                 return 'bg-green-100 text-green-800 hover:bg-green-100';
-            case 'cancelled': // Now explicitly handling cancelled status for badge
+            case 'cancelled':
                 return 'bg-red-100 text-red-800 hover:bg-red-100';
             default:
                 return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
@@ -167,12 +142,12 @@ const BookingsPage = () => {
                             <SheetHeader>
                                 <SheetTitle>Filter & Sort Bookings</SheetTitle>
                             </SheetHeader>
-                            <div className="py-4 space-y-6">
+                            <div className="py-4 sm:py-6 px-4 sm:px-8 mb-6 sm:mb-8 space-y-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="filter-status">Filter by Status</Label>
                                     <Select value={filterStatus} onValueChange={setFilterStatus}>
                                         <SelectTrigger id="filter-status">
-                                            <SelectValue placeholder="Select a status"/>
+                                            <SelectValue placeholder="Select a status" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="all">All</SelectItem>

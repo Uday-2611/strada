@@ -2,28 +2,15 @@
 
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { useRouter } from 'next/navigation'
 import useAuth from '@/hooks/useAuth'
 import client from '@/api/client'
-import { useRouter } from 'next/navigation'
 
 const ProfilePage = () => {
     const { user, loading: authLoading } = useAuth()
@@ -47,23 +34,17 @@ const ProfilePage = () => {
             if (!user) return
             try {
                 setLoading(true)
-                const { data: profileData, error: profileError } = await client
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', user.id)
-                    .single()
+                const { data: profileData, error: profileError } = await client.from('profiles').select('*').eq('id', user.id).single()
                 if (profileError) {
                     if (profileError.code === 'PGRST116') {
-                        const { error: insertError } = await client
-                            .from('profiles')
-                            .insert([
-                                {
-                                    id: user.id,
-                                    email: user.email,
-                                    created_at: new Date().toISOString(),
-                                    updated_at: new Date().toISOString()
-                                }
-                            ])
+                        const { error: insertError } = await client.from('profiles').insert([
+                            {
+                                id: user.id,
+                                email: user.email,
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            }
+                        ])
                         if (insertError) throw insertError
                         setProfile({ id: user.id, email: user.email, full_name: '', address: '', phone: '', created_at: new Date().toISOString() });
                     } else {
@@ -90,11 +71,7 @@ const ProfilePage = () => {
         const fetchBookings = async () => {
             if (!user) return
             try {
-                const { data, error } = await client
-                    .from('bookings')
-                    .select('*, vehicles(name, type)')
-                    .eq('user_id', user.id)
-                    .order('created_at', { ascending: false })
+                const { data, error } = await client.from('bookings').select('*, vehicles(name, type)').eq('user_id', user.id).order('created_at', { ascending: false })
                 if (error) throw error
                 setBookings(data)
             } catch (error) {
@@ -108,22 +85,19 @@ const ProfilePage = () => {
 
     const handleProfileUpdate = async (e) => {
         e.preventDefault()
-        
+
         if (!user) {
             toast.error('Please log in to update your profile')
             return
         }
 
         try {
-            const { error } = await client
-                .from('profiles')
-                .update({
-                    full_name: profile.full_name,
-                    address: profile.address,
-                    phone: profile.phone,
-                    updated_at: new Date().toISOString()
-                })
-                .eq('id', user.id)
+            const { error } = await client.from('profiles').update({
+                full_name: profile.full_name,
+                address: profile.address,
+                phone: profile.phone,
+                updated_at: new Date().toISOString()
+            }).eq('id', user.id)
 
             if (error) throw error
 
@@ -202,13 +176,12 @@ const ProfilePage = () => {
                                 <TableCell>{new Date(booking.pickup_date).toLocaleDateString()}</TableCell>
                                 <TableCell>{new Date(booking.dropoff_date).toLocaleDateString()}</TableCell>
                                 <TableCell className="text-right">
-                                    <span className={`px-2 py-1 rounded-full text-sm ${
-                                        booking.status === 'completed'
-                                            ? 'bg-green-100 text-green-800'
-                                            : booking.status === 'confirmed'
+                                    <span className={`px-2 py-1 rounded-full text-sm ${booking.status === 'completed'
+                                        ? 'bg-green-100 text-green-800'
+                                        : booking.status === 'confirmed'
                                             ? 'bg-yellow-100 text-yellow-800'
                                             : 'bg-red-100 text-red-800'
-                                    }`}>
+                                        }`}>
                                         {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                                     </span>
                                 </TableCell>
@@ -238,9 +211,7 @@ const ProfilePage = () => {
                         </CardHeader>
                         <CardContent>
                             <p className="text-2xl font-semibold">
-                                {profile.created_at
-                                    ? new Date(profile.created_at).toLocaleDateString()
-                                    : 'N/A'}
+                                {profile.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}
                             </p>
                         </CardContent>
                     </Card>
@@ -303,34 +274,16 @@ const ProfilePage = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="name">Full Name</Label>
-                                    <Input 
-                                        id="name" 
-                                        placeholder="Enter your full name"
-                                        value={profile.full_name}
-                                        onChange={(e) => setProfile(prev => ({ ...prev, full_name: e.target.value }))}
-                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
-                                    />
+                                    <Input id="name" placeholder="Enter your full name" value={profile.full_name} onChange={(e) => setProfile(prev => ({ ...prev, full_name: e.target.value }))} className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email Address</Label>
-                                    <Input 
-                                        id="email" 
-                                        type="email" 
-                                        value={profile.email}
-                                        disabled
-                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
-                                    />
+                                    <Input id="email" type="email" value={profile.email} disabled className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="address">Home Address</Label>
-                                <Input 
-                                    id="address" 
-                                    placeholder="Enter your home address"
-                                    value={profile.address}
-                                    onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))}
-                                    className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
-                                />
+                                <Input id="address" placeholder="Enter your home address" value={profile.address} onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))} className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                             </div>
                             <div className="flex justify-end">
                                 <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
@@ -346,25 +299,11 @@ const ProfilePage = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="current-password">Current Password</Label>
-                                    <Input 
-                                        id="current-password" 
-                                        type="password" 
-                                        placeholder="Enter current password"
-                                        value={passwords.current}
-                                        onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))}
-                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
-                                    />
+                                    <Input id="current-password" type="password" placeholder="Enter current password" value={passwords.current} onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))} className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="new-password">New Password</Label>
-                                    <Input 
-                                        id="new-password" 
-                                        type="password" 
-                                        placeholder="Enter new password"
-                                        value={passwords.new}
-                                        onChange={(e) => setPasswords(prev => ({ ...prev, new: e.target.value }))}
-                                        className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12"
-                                    />
+                                    <Input id="new-password" type="password" placeholder="Enter new password" value={passwords.new} onChange={(e) => setPasswords(prev => ({ ...prev, new: e.target.value }))} className="bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12" />
                                 </div>
                             </div>
                             <div className="flex justify-end">

@@ -4,13 +4,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState, useRef } from "react";
 import TestimonialCard from "./TestimonialCard";
 
-export const InfiniteMovingCards = ({
-  items,
-  direction = "left",
-  speed = "fast",
-  pauseOnHover = true,
-  className,
-}) => {
+export const InfiniteMovingCards = ({ items, direction = "left", speed = "fast", pauseOnHover = true, className, }) => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
 
@@ -66,29 +60,10 @@ export const InfiniteMovingCards = ({
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "scroller relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
-        className
-      )}
-    >
-      <ul
-        ref={scrollerRef}
-        className={cn(
-          "flex min-w-full shrink-0 gap-8 py-4 w-max flex-nowrap",
-          start && "animate-scroll",
-          pauseOnHover && "hover:[animation-play-state:paused]"
-        )}
-      >
+    <div ref={containerRef} className={cn("scroller relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]", className)} >
+      <ul ref={scrollerRef} className={cn("flex min-w-full shrink-0 gap-8 py-4 w-max flex-nowrap", start && "animate-scroll", pauseOnHover && "hover:[animation-play-state:paused]")} >
         {items.map((testimonial, index) => (
-            <TestimonialCard
-                key={index}
-                name={testimonial.name}
-                title={testimonial.title}
-                quote={testimonial.quote}
-                avatar={testimonial.avatar}
-            />
+          <TestimonialCard key={index} name={testimonial.name} title={testimonial.title} quote={testimonial.quote} avatar={testimonial.avatar} />
         ))}
       </ul>
     </div>

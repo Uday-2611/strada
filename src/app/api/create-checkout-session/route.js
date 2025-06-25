@@ -15,7 +15,7 @@ export async function POST(request) {
               name: item.name,
               description: item.description,
             },
-            unit_amount: item.amount, // amount in paise
+            unit_amount: item.amount,
           },
           quantity: item.quantity,
         },

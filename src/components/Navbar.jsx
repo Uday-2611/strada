@@ -24,12 +24,7 @@ const Navbar = () => {
     <div className="flex justify-center w-full py-6 px-4">
       <div className="flex items-center justify-between px-6 py-1 bg-white rounded-full shadow-lg w-full max-w-3xl relative z-10">
         <div className="flex items-center">
-          <img
-            src="/logoBlack.png"
-            alt="Strada Logo"
-            className="h-14 w-auto object-contain cursor-pointer"
-            onClick={() => router.push('/dashboard')}
-          />
+          <img src="/logoBlack.png" alt="Strada Logo" className="h-14 w-auto object-contain cursor-pointer" onClick={() => router.push('/dashboard')} />
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
@@ -48,13 +43,13 @@ const Navbar = () => {
           </Button>
         </motion.div>
 
-        {/* Mobile Menu Button */}
+        {/* For Mobile view -> */}
         <motion.button className="md:hidden flex items-center" onClick={toggleMenu} whileTap={{ scale: 0.9 }}>
           <Menu className="h-6 w-6 text-gray-900" />
         </motion.button>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile View Menu ->  */}
       <AnimatePresence>
         {isOpen && (
           <motion.div className="fixed inset-0 bg-white z-50 pt-24 px-6 md:hidden" initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 300 }} >
@@ -74,13 +69,10 @@ const Navbar = () => {
               ))}
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} exit={{ opacity: 0, y: 20 }} className="pt-6" >
-                <Button
-                  onClick={() => {
-                    client.auth.signOut()
-                    toggleMenu()
-                  }}
-                  className="w-full text-base text-white bg-red-600 rounded-full hover:bg-red-700 transition-colors h-12"
-                >
+                <Button onClick={() => {
+                  client.auth.signOut()
+                  toggleMenu()
+                }} className="w-full text-base text-white bg-red-600 rounded-full hover:bg-red-700 transition-colors h-12" >
                   Sign Out
                 </Button>
               </motion.div>

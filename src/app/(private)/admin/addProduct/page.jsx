@@ -56,30 +56,26 @@ const page = () => {
     setLoading(true)
     setSuccess('')
     setError('')
-    // Validate required fields
     if (!form.name || !form.type || !form.price_per_day || !form.seats || !form.status) {
       setError('Please fill all required fields.')
       setLoading(false)
       return
     }
-    // Insert into Supabase
-    const { error } = await client
-      .from('vehicles')
-      .insert([{
-        name: form.name,
-        type: form.type,
-        description: form.description,
-        price_per_day: Number(form.price_per_day),
-        transmission: form.transmission,
-        fuel_type: form.fuel_type,
-        seats: Number(form.seats),
-        images: form.images
-          ? form.images.split(',').map(s => s.trim()).filter(Boolean)
-          : [],
-        status: form.status,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }])
+    const { error } = await client.from('vehicles').insert([{
+      name: form.name,
+      type: form.type,
+      description: form.description,
+      price_per_day: Number(form.price_per_day),
+      transmission: form.transmission,
+      fuel_type: form.fuel_type,
+      seats: Number(form.seats),
+      images: form.images
+        ? form.images.split(',').map(s => s.trim()).filter(Boolean)
+        : [],
+      status: form.status,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }])
     if (error) {
       setError('Failed to add product. Please try again.')
     } else {
@@ -90,8 +86,8 @@ const page = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm p-8 border">
+    <div className="min-h-screen bg-gray-50 py-8 px-2 sm:px-4 md:px-8">
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm p-4 sm:p-8 border">
         <h1 className="text-2xl font-bold mb-4">Add New Vehicle</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -122,12 +118,7 @@ const page = () => {
               </SelectContent>
             </Select>
 
-            <Input
-              name="images"
-              value={form.images}
-              onChange={handleChange}
-              placeholder="Image URL(s), comma separated"
-            />
+            <Input name="images" value={form.images} onChange={handleChange} placeholder="Image URL(s), comma separated" />
 
             <Select value={form.status} onValueChange={val => handleSelectChange('status', val)}>
               <SelectTrigger className="w-full" required>
@@ -140,13 +131,7 @@ const page = () => {
               </SelectContent>
             </Select>
           </div>
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Description"
-            className="w-full border rounded-md p-2 min-h-[80px]"
-          />
+          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" className="w-full border rounded-md p-2 min-h-[80px]" />
           {error && <div className="text-red-600 font-medium">{error}</div>}
           {success && <div className="text-green-600 font-medium">{success}</div>}
           <Button type="submit" disabled={loading} className="w-full">

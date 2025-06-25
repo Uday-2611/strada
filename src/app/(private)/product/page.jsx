@@ -49,32 +49,20 @@ const ProductPage = () => {
       const vehicleId = searchParams.get('id')
       if (vehicleId) {
         try {
-          console.log('Fetching vehicle data for ID:', vehicleId)
-          const { data: vehicleData, error: vehicleError } = await client
-            .from('vehicles')
-            .select('*')
-            .eq('id', vehicleId)
-            .single()
+          const { data: vehicleData, error: vehicleError } = await client.from('vehicles').select('*').eq('id', vehicleId).single()
 
           if (vehicleError) {
             console.error('Error fetching vehicle:', vehicleError)
             throw vehicleError
           }
-          console.log('Vehicle data:', vehicleData)
           setVehicle(vehicleData)
 
-          console.log('Fetching reviews for vehicle ID:', vehicleId)
-          const { data: reviewsData, error: reviewsError } = await client
-            .from('reviews')
-            .select('*')
-            .eq('vehicle_id', vehicleId)
-            .order('created_at', { ascending: false })
+          const { data: reviewsData, error: reviewsError } = await client.from('reviews').select('*').eq('vehicle_id', vehicleId).order('created_at', { ascending: false })
 
           if (reviewsError) {
             console.error('Error fetching reviews:', reviewsError)
             throw reviewsError
           }
-          console.log('Reviews data:', reviewsData)
           setReviews(reviewsData)
         } catch (error) {
           console.error("Error details:", {
@@ -142,9 +130,7 @@ const ProductPage = () => {
     }
 
     try {
-      const { data, error } = await client
-        .from('bookings')
-        .insert({
+      const { data, error } = await client.from('bookings').insert({
           user_id: user.id,
           vehicle_id: searchParams.get('id'),
           pickup_date: bookingDetails.pickup_date,
@@ -157,8 +143,7 @@ const ProductPage = () => {
           status: 'pending',
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
-        })
-        .select()
+        }).select()
 
       if (error) {
         console.error('Error creating booking:', error)
@@ -202,16 +187,13 @@ const ProductPage = () => {
     }
 
     try {
-      const { data, error } = await client
-        .from('reviews')
-        .insert({
+      const { data, error } = await client.from('reviews').insert({
           vehicle_id: searchParams.get('id'),
           rating: newReview.rating,
           comment: newReview.comment,
           user_id: user.id,
           created_at: new Date().toISOString()
-        })
-        .select()
+        }).select()
 
       if (error) {
         console.error('Supabase error:', error)
@@ -249,9 +231,9 @@ const ProductPage = () => {
 
   return (
     <div className='w-screen min-h-screen bg-background p-6'>
-      <div className='flex gap-6 max-w-7xl mx-auto'>
+      <div className='flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto'>
         {/* Left Section - Product Image and Basic Info */}
-        <div className='w-1/2 space-y-6'>
+        <div className='w-full lg:w-1/2 space-y-6'>
 
           <div className='w-full aspect-video bg-muted rounded-lg flex items-center justify-center'>
             {vehicle.images && vehicle.images[0] ? (
@@ -292,7 +274,7 @@ const ProductPage = () => {
         </div>
 
         {/* Right Section - Booking Details */}
-        <div className='w-1/2 space-y-6'>
+        <div className='w-full lg:w-1/2 space-y-6'>
           <Card className='bg-gray-100 border-none'>
             <CardHeader>
               <CardTitle className='text-xl'>Book Now</CardTitle>
@@ -302,48 +284,22 @@ const ProductPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="pickup">Pickup Date</Label>
-                  <Input
-                    type="date"
-                    id="pickup"
-                    value={bookingDetails.pickup_date}
-                    onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_date: e.target.value }))}
-                    min={new Date().toISOString().split('T')[0]}
-                    className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
+                  <Input type="date" id="pickup" value={bookingDetails.pickup_date} onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_date: e.target.value }))} min={new Date().toISOString().split('T')[0]} className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="dropoff">Drop-off Date</Label>
-                  <Input
-                    type="date"
-                    id="dropoff"
-                    value={bookingDetails.dropoff_date}
-                    onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_date: e.target.value }))}
-                    min={bookingDetails.pickup_date || new Date().toISOString().split('T')[0]}
-                    className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
+                  <Input type="date" id="dropoff" value={bookingDetails.dropoff_date} onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_date: e.target.value }))} min={bookingDetails.pickup_date || new Date().toISOString().split('T')[0]} className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="pickup-location">Pickup Location</Label>
-                <Input
-                  id="pickup-location"
-                  placeholder="Enter pickup location"
-                  value={bookingDetails.pickup_location}
-                  onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_location: e.target.value }))}
-                  className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
+                <Input id="pickup-location" placeholder="Enter pickup location" value={bookingDetails.pickup_location} onChange={(e) => setBookingDetails(prev => ({ ...prev, pickup_location: e.target.value }))} className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="dropoff-location">Drop-off Location</Label>
-                <Input
-                  id="dropoff-location"
-                  placeholder="Enter drop-off location"
-                  value={bookingDetails.dropoff_location}
-                  onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_location: e.target.value }))}
-                  className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
+                <Input id="dropoff-location" placeholder="Enter drop-off location" value={bookingDetails.dropoff_location} onChange={(e) => setBookingDetails(prev => ({ ...prev, dropoff_location: e.target.value }))} className="h-12 bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
 
               <Separator />
@@ -378,7 +334,7 @@ const ProductPage = () => {
       </div>
 
       {/* Reviews Section */}
-      <div className="max-w-7xl mx-auto mt-12">
+      <div className="max-w-7xl mx-auto mt-12 px-2 sm:px-4 md:px-0">
         <Card className="bg-gray-100 border-none">
           <CardHeader>
             <CardTitle className='text-xl'>Reviews</CardTitle>
@@ -421,12 +377,7 @@ const ProductPage = () => {
                       <Label>Rating</Label>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
-                          <Button
-                            key={star}
-                            variant="ghost"
-                            className={`rounded-full ${newReview.rating >= star ? 'text-yellow-500' : 'text-gray-400'}`}
-                            onClick={() => setNewReview({ ...newReview, rating: star })}
-                          >
+                          <Button key={star} variant="ghost" className={`rounded-full ${newReview.rating >= star ? 'text-yellow-500' : 'text-gray-400'}`} onClick={() => setNewReview({ ...newReview, rating: star })} >
                             ★
                           </Button>
                         ))}
@@ -435,13 +386,7 @@ const ProductPage = () => {
 
                     <div className="space-y-2">
                       <Label htmlFor="review">Your Review</Label>
-                      <Textarea
-                        id="review"
-                        placeholder="Share your experience..."
-                        value={newReview.comment}
-                        onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-                        className="bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                      />
+                      <Textarea id="review" placeholder="Share your experience..." value={newReview.comment} onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })} className="bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                     </div>
 
                     <Button className='h-12 w-40' onClick={handleSubmitReview} disabled={!newReview.comment.trim()} >

@@ -31,7 +31,7 @@ const VehicleCard = ({ vehicle, handleBookNow }) => {
                 </Button>
             </CardFooter>
         </Card>
-        
+
     );
 };
 

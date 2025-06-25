@@ -95,11 +95,11 @@ const page = () => {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-2 sm:px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Active Orders</h1>
         <p className="text-gray-600 mb-8 max-w-2xl">Manage all confirmed bookings. Change their status as needed.</p>
-        <div className="bg-white rounded-lg shadow-sm p-6 border">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
             <h2 className="text-xl font-semibold text-gray-900">Confirmed Bookings</h2>
             <Input

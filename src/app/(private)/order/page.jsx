@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { CreditCard, IndianRupee, Wallet } from 'lucide-react'
+import { CreditCard, Wallet } from 'lucide-react'
 import useAuth from '@/hooks/useAuth'
 import { toast } from 'sonner'
 import client from '@/api/client'
@@ -50,18 +49,12 @@ const page = () => {
       if (!bookingId) {
         setLoading(false)
         toast.error('Booking ID not found in URL')
-        router.push('/dashboard') // Redirect if no booking ID
+        router.push('/dashboard')
         return
       }
 
       try {
-        // Fetch booking details
-        const { data: bookingData, error: bookingError } = await client
-          .from('bookings')
-          .select('*')
-          .eq('id', bookingId)
-          .eq('user_id', user.id) // Ensure only fetching user's own booking
-          .single()
+        const { data: bookingData, error: bookingError } = await client.from('bookings').select('*').eq('id', bookingId).eq('user_id', user.id).single()
 
         if (bookingError) {
           console.error('Error fetching booking:', bookingError)
@@ -69,12 +62,7 @@ const page = () => {
         }
         setBooking(bookingData)
 
-        // Fetch vehicle details
-        const { data: vehicleData, error: vehicleError } = await client
-          .from('vehicles')
-          .select('*')
-          .eq('id', bookingData.vehicle_id)
-          .single()
+        const { data: vehicleData, error: vehicleError } = await client.from('vehicles').select('*').eq('id', bookingData.vehicle_id).single()
 
         if (vehicleError) {
           console.error('Error fetching vehicle:', vehicleError)
@@ -82,32 +70,25 @@ const page = () => {
         }
         setVehicle(vehicleData)
 
-        // Fetch user profile for billing details
-        const { data: profileData, error: profileError } = await client
-          .from('profiles')
-          .select('full_name, email, address, phone')
-          .eq('id', user.id)
-          .single()
+        const { data: profileData, error: profileError } = await client.from('profiles').select('full_name, email, address, phone').eq('id', user.id).single()
 
         if (profileError) {
           console.error('Error fetching profile:', profileError)
-          // If profile doesn't exist, handle it gracefully
-          if (profileError.code === 'PGRST116' || (profileError && Object.keys(profileError).length === 0)) { // No rows found or empty error object
+          if (profileError.code === 'PGRST116' || (profileError && Object.keys(profileError).length === 0)) {
             toast.info('Profile not found, please update your billing details.')
-            setProfile(null); // Explicitly set profile to null if not found
+            setProfile(null);
           } else {
             throw profileError
           }
         } else if (!profileData) {
-            // Handle case where no profile data is returned but no explicit error is thrown
-            toast.info('Profile not found, please update your billing details.');
-            setProfile(null);
+          toast.info('Profile not found, please update your billing details.');
+          setProfile(null);
         }
 
         setProfile(profileData)
         setBillingDetails({
           full_name: profileData?.full_name || '',
-          email: profileData?.email || user.email || '', // Use user.email if profile email is null
+          email: profileData?.email || user.email || '',
           phone: profileData?.phone || '',
           address: profileData?.address || ''
         })
@@ -115,7 +96,7 @@ const page = () => {
       } catch (error) {
         console.error("Error loading order page data:", error)
         toast.error('Error loading order details: ' + (error.message || 'Unknown error'))
-        router.push('/dashboard') // Redirect on error
+        router.push('/dashboard')
       } finally {
         setLoading(false)
       }
@@ -131,10 +112,10 @@ const page = () => {
     }
 
     if (!billingDetails.phone.trim()) {
-        toast.error('Please enter your phone number.')
-        return
+      toast.error('Please enter your phone number.')
+      return
     }
-    
+
     setLoading(true);
 
     if (paymentMethod === 'Stripe') {
@@ -183,44 +164,32 @@ const page = () => {
     }
 
     try {
-        // Update phone number in profiles table
-        const { error: profileUpdateError } = await client
-            .from('profiles')
-            .update({ phone: billingDetails.phone, updated_at: new Date().toISOString() })
-            .eq('id', user.id)
-        
-        if (profileUpdateError) throw profileUpdateError
+      const { error: profileUpdateError } = await client.from('profiles').update({ phone: billingDetails.phone, updated_at: new Date().toISOString() }).eq('id', user.id)
 
-        // Update booking status and payment method
-        const { error: bookingUpdateError } = await client
-            .from('bookings')
-            .update({ status: 'confirmed', payment_method: paymentMethod, updated_at: new Date().toISOString() })
-            .eq('id', booking.id)
-            .eq('user_id', user.id)
+      if (profileUpdateError) throw profileUpdateError
 
-        if (bookingUpdateError) throw bookingUpdateError
+      const { error: bookingUpdateError } = await client.from('bookings').update({ status: 'confirmed', payment_method: paymentMethod, updated_at: new Date().toISOString() }).eq('id', booking.id).eq('user_id', user.id)
 
-        // Insert into payments table
-        const { error: paymentInsertError } = await client
-            .from('payments')
-            .insert({
-                booking_id: booking.id,
-                amount: booking.total_amount,
-                payment_method: paymentMethod,
-                transaction_id: `TXN_${Date.now()}`, // Placeholder transaction ID
-                status: 'completed',
-                created_at: new Date().toISOString(),
-            })
+      if (bookingUpdateError) throw bookingUpdateError
 
-        if (paymentInsertError) throw paymentInsertError
+      const { error: paymentInsertError } = await client.from('payments').insert({
+        booking_id: booking.id,
+        amount: booking.total_amount,
+        payment_method: paymentMethod,
+        transaction_id: `TXN_${Date.now()}`,
+        status: 'completed',
+        created_at: new Date().toISOString(),
+      })
 
-        toast.success('Booking confirmed successfully!')
-        router.push('/dashboard') // Redirect to dashboard
+      if (paymentInsertError) throw paymentInsertError
+
+      toast.success('Booking confirmed successfully!')
+      router.push('/dashboard')
     } catch (error) {
-        console.error('Payment processing error:', error)
-        toast.error('Failed to process payment: ' + (error.message || 'Unknown error'))
+      console.error('Payment processing error:', error)
+      toast.error('Failed to process payment: ' + (error.message || 'Unknown error'))
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
   }
 
@@ -242,9 +211,9 @@ const page = () => {
 
   return (
     <div className='w-screen min-h-screen bg-background p-6'>
-      <div className='flex gap-6 max-w-7xl mx-auto'>
+      <div className='flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto'>
         {/* Left Section - Order and Billing Details */}
-        <div className='w-1/2 space-y-6'>
+        <div className='w-full lg:w-1/2 space-y-6'>
           <Card className="bg-gray-100 border-none">
             <CardHeader>
               <CardTitle className='text-xl'>Order Details</CardTitle>
@@ -299,14 +268,7 @@ const page = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="+91 98765 43210"
-                  value={billingDetails.phone}
-                  onChange={(e) => setBillingDetails(prev => ({ ...prev, phone: e.target.value }))}
-                  className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
+                <Input id="phone" type="tel" placeholder="+91 98765 43210" value={billingDetails.phone} onChange={(e) => setBillingDetails(prev => ({ ...prev, phone: e.target.value }))} className="h-12 bg-gray-50 border-none focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
 
               <div className="space-y-2">
@@ -327,7 +289,7 @@ const page = () => {
                   <CreditCard className="h-5 w-5" />
                   <span>Pay with Stripe</span>
                 </Button>
-                
+
                 <Button className="w-full justify-start gap-2 h-12 bg-green-500 hover:bg-green-600" onClick={() => handlePayment('Cash on Delivery')} disabled={loading}>
                   <Wallet className="h-5 w-5" />
                   <span>Cash on Delivery</span>
@@ -338,7 +300,7 @@ const page = () => {
         </div>
 
         {/* Right Section - Order Summary */}
-        <div className='w-1/2 space-y-6'>
+        <div className='w-full lg:w-1/2 space-y-6'>
           <Card className="bg-gray-100 border-none">
             <CardHeader>
               <CardTitle className='text-xl'>Order Summary</CardTitle>

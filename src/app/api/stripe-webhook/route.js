@@ -19,7 +19,7 @@ export async function POST(request) {
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
   }
 
-  // Handle the event
+  // Event Handler -> 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
     const bookingId = session.metadata.booking_id
@@ -31,38 +31,28 @@ export async function POST(request) {
     }
 
     try {
-      // Step 1: Update booking status to 'confirmed'
-      const { error: bookingUpdateError } = await client
-        .from('bookings')
-        .update({ status: 'confirmed', payment_method: 'Stripe', updated_at: new Date().toISOString() })
-        .eq('id', bookingId)
+      // Booking Status: Confirmed -> 
+      const { error: bookingUpdateError } = await client.from('bookings').update({ status: 'confirmed', payment_method: 'Stripe', updated_at: new Date().toISOString() }).eq('id', bookingId)
 
       if (bookingUpdateError) throw bookingUpdateError
 
-      // Step 2: Fetch the booking to get the total_amount
-      const { data: bookingData, error: bookingFetchError } = await client
-        .from('bookings')
-        .select('total_amount')
-        .eq('id', bookingId)
-        .single()
+      // Booking fetch for total amount -> 
+      const { data: bookingData, error: bookingFetchError } = await client.from('bookings').select('total_amount').eq('id', bookingId).single()
 
       if (bookingFetchError) throw bookingFetchError
 
-      // Step 3: Insert into payments table
-      const { error: paymentInsertError } = await client
-        .from('payments')
-        .insert({
-          booking_id: bookingId,
-          amount: bookingData.total_amount,
-          payment_method: 'Stripe',
-          transaction_id: transactionId,
-          status: 'completed',
-          created_at: new Date().toISOString(),
-        })
+      // Data inserted into payments table
+      const { error: paymentInsertError } = await client.from('payments').insert({
+        booking_id: bookingId,
+        amount: bookingData.total_amount,
+        payment_method: 'Stripe',
+        transaction_id: transactionId,
+        status: 'completed',
+        created_at: new Date().toISOString(),
+      })
 
       if (paymentInsertError) throw paymentInsertError
 
-      console.log(`Successfully processed booking ${bookingId} for Stripe payment.`)
     } catch (error) {
       console.error(`Database error processing booking ${bookingId}:`, error)
       return NextResponse.json({ error: 'Database update failed' }, { status: 500 })

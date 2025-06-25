@@ -1,18 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from '@/components/ui/button'
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import ScrollStack from '@/components/ScrollStack'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import TestimonialCard from '@/components/TestimonialCard'
 import { InfiniteMovingCards } from '@/components/infinite-moving-cards'
 
 const testimonials = [
@@ -57,10 +50,10 @@ const Dashboard = () => {
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
                 <div className='flex flex-col lg:flex-col mt-14 gap-6 items-center m-auto '>
                     <div className=' text-center space-y-8'>
-                        <h1 className='text-8xl [font-family:var(--SupremeBold)] text-gray-900 leading-tight uppercase'>
+                        <h1 className='text-4xl sm:text-6xl md:text-8xl [font-family:var(--SupremeBold)] text-gray-900 leading-tight uppercase'>
                             Your Journey, Your Wheels.
                         </h1>
-                        <p className='text-xl text-gray-600 leading-relaxed'>
+                        <p className='text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mt-2 sm:mt-4'>
                             Unlock your next adventure with fast, secure rentals for cars and bikes. Seamlessly book your perfect ride for any journey, available anytime and anywhere with just a few clicks.
                         </p>
                         <div className='flex space-x-4'>

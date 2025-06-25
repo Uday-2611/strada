@@ -35,27 +35,16 @@ const page = () => {
 
   const fetchBookings = async () => {
     setLoading(true)
-    // Fetch all bookings, any status
-    const { data: bookings } = await client
-      .from('bookings')
-      .select('id, status, created_at, user_id, vehicle_id, total_amount')
-      .order('created_at', { ascending: false })
 
-    // Fetch all needed profiles and vehicles
+    const { data: bookings } = await client.from('bookings').select('id, status, created_at, user_id, vehicle_id, total_amount').order('created_at', { ascending: false })
+
     const userIds = [...new Set((bookings || []).map(b => b.user_id))]
     const vehicleIds = [...new Set((bookings || []).map(b => b.vehicle_id))]
 
-    const { data: profiles } = await client
-      .from('profiles')
-      .select('id, full_name')
-      .in('id', userIds)
+    const { data: profiles } = await client.from('profiles').select('id, full_name').in('id', userIds)
 
-    const { data: vehicles } = await client
-      .from('vehicles')
-      .select('id, name')
-      .in('id', vehicleIds)
+    const { data: vehicles } = await client.from('vehicles').select('id, name').in('id', vehicleIds)
 
-    // Map names into bookings
     const profileMap = Object.fromEntries((profiles || []).map(p => [p.id, p.full_name]))
     const vehicleMap = Object.fromEntries((vehicles || []).map(v => [v.id, v.name]))
 
@@ -71,10 +60,7 @@ const page = () => {
 
   const fetchVehicles = async () => {
     setVehicleLoading(true)
-    const { data: vehicles } = await client
-      .from('vehicles')
-      .select('id, name, type, price_per_day, status, created_at')
-      .order('created_at', { ascending: false })
+    const { data: vehicles } = await client.from('vehicles').select('id, name, type, price_per_day, status, created_at').order('created_at', { ascending: false })
     setVehicles(vehicles || [])
     setVehicleLoading(false)
   }
@@ -94,19 +80,14 @@ const page = () => {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-2 sm:px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">All Orders</h1>
         <p className="text-gray-600 mb-8 max-w-2xl">View all bookings, regardless of their status.</p>
-        <div className="bg-white rounded-lg shadow-sm p-6 border mb-10">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border mb-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
             <h2 className="text-xl font-semibold text-gray-900">All Bookings</h2>
-            <Input
-              placeholder="Filter by user or vehicle..."
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="max-w-xs"
-            />
+            <Input placeholder="Filter by user or vehicle..." value={filter} onChange={(e) => setFilter(e.target.value)} className="max-w-xs" />
           </div>
           <div className="overflow-x-auto">
             <Table>
@@ -149,7 +130,7 @@ const page = () => {
         </div>
 
         {/* Vehicles Table */}
-        <div className="bg-white rounded-lg shadow-sm p-6 border">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">All Vehicles</h2>
           <div className="overflow-x-auto">
             <Table>
@@ -178,12 +159,7 @@ const page = () => {
                         <TableCell className="px-4 py-2 capitalize">{v.status}</TableCell>
                         <TableCell className="px-4 py-2">{v.created_at ? new Date(v.created_at).toLocaleDateString() : ''}</TableCell>
                         <TableCell className="px-4 py-2">
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteVehicle(v.id)}
-                            disabled={deletingId === v.id}
-                          >
+                          <Button variant="destructive" size="sm" onClick={() => handleDeleteVehicle(v.id)} disabled={deletingId === v.id} >
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </TableCell>

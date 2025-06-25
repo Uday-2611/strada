@@ -4,15 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import client from '@/api/client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { toast } from 'sonner'
+import client from '@/api/client'
 import VehicleCard from '@/components/VehicleCard'
 
 const VehiclesPage = () => {
@@ -26,7 +20,7 @@ const VehiclesPage = () => {
 
     useEffect(() => {
         fetchVehicles()
-    }, [])
+    }, [sortBy])
 
     const fetchVehicles = async () => {
         try {
@@ -40,8 +34,6 @@ const VehiclesPage = () => {
                 query = query.order('price_per_day', { ascending: true })
             } else if (sortBy === 'price-high') {
                 query = query.order('price_per_day', { ascending: false })
-            } else if (sortBy === 'rating') {
-                query = query.order('created_at', { ascending: false })
             }
 
             const { data, error } = await query
@@ -78,13 +70,16 @@ const VehiclesPage = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                <div className="flex w-full sm:w-auto items-center gap-2">
+                <form className="flex w-full sm:w-auto items-center gap-2" onSubmit={e => {
+                    e.preventDefault();
+                    fetchVehicles();
+                }} >
                     <Input type="search" placeholder="Search vehicles..." className="max-w-sm" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-                    <Button variant="outline" onClick={fetchVehicles}>
+                    <Button variant="outline" type="submit">
                         <i className="ri-search-line mr-2"></i>
                         Search
                     </Button>
-                </div>
+                </form>
 
                 <div className="flex items-center gap-4">
                     <Select value={sortBy} onValueChange={setSortBy}>
@@ -97,10 +92,6 @@ const VehiclesPage = () => {
                             <SelectItem value="price-high">Price: High to Low</SelectItem>
                         </SelectContent>
                     </Select>
-
-                    <Button variant="outline" onClick={fetchVehicles}>
-                        Reset Filters
-                    </Button>
                 </div>
             </div>
 
