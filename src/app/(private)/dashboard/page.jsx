@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
@@ -43,6 +43,19 @@ const testimonials = [
 
 const Dashboard = () => {
     const router = useRouter();
+    const [scale, setScale] = useState(0.7);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const maxScroll = 300;
+            const scrollY = window.scrollY;
+            const progress = Math.min(scrollY / maxScroll, 1);
+            const newScale = 0.7 + 0.45 * progress;
+            setScale(newScale);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <div className='w-full min-h-screen bg-white'>
@@ -62,9 +75,18 @@ const Dashboard = () => {
                             </Button>
                         </div>
                     </div>
-                    <div className='lg:w-3/4'>
-                        <div className='bg-gray-900 w-full aspect-video rounded-2xl relative overflow-hidden'>
-                            <img src="/dashboard.jpeg" alt="Strada Dashboard" className="w-full h-full object-cover" />
+                    <div className='lg:w-[90%] w-full'>
+                        <div className='w-full aspect-[16/7] rounded-2xl relative overflow-hidden'>
+                            <img
+                                src="/dashboard.jpeg"
+                                alt="Strada Dashboard"
+                                className="w-full h-full object-cover transition-transform rounded-2xl duration-600"
+                                style={{ 
+                                    transform: `scale(${scale})`, 
+                                    transitionTimingFunction: 'linear',
+                                    transitionDuration: '600ms'
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
