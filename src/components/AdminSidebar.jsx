@@ -20,12 +20,10 @@ const AdminSidebar = () => {
 
     return (
         <>
-            {/* Hamburger for mobile -> */}
             <button className="fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-900 text-white lg:hidden" onClick={() => setSidebarOpen((open) => !open)} aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"} >
                 {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
 
-            {/* Sidebar overlay & sliding panel for mobile view -> */}
             <div className={`fixed inset-0 z-40 bg-black bg-opacity-40 transition-opacity duration-300 ${sidebarOpen ? 'block' : 'hidden'} lg:hidden`} onClick={() => setSidebarOpen(false)} />
             <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-gray-900 text-white p-4 flex flex-col justify-between transform transition-transform duration-300 lg:static lg:translate-x-0 lg:block ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:w-full lg:h-full`} style={{ boxShadow: sidebarOpen ? '0 0 20px rgba(0,0,0,0.2)' : 'none' }} >
                 <div>
@@ -50,7 +48,6 @@ const AdminSidebar = () => {
                 </div>
             </aside>
 
-            {/* Regular Screen Sidebar ->  */}
             <aside className="hidden lg:block bg-gray-900 text-white w-full h-full p-4 flex flex-col justify-between">
                 <div>
                     <div className='flex items-center gap-2 mb-8'>

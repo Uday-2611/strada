@@ -1,6 +1,17 @@
 # Strada
 
-A modern web application built with Next.js and Supabase.
+- Developed a modern web application using Next.js 15.3.3 and React 19.
+- Integrated Supabase as the backend database and authentication provider.
+- Utilized Tailwind CSS for responsive and utility-first styling.
+- Implemented a modular UI with Radix UI components, including Accordion, Dialog, Dropdown, Tabs, Tooltip, and more.
+- Incorporated Lucide React for iconography and React Day Picker for date selection.
+- Integrated Vaul for advanced drawer components.
+- Employed utility libraries such as date-fns, class-variance-authority, clsx, and tailwind-merge for enhanced code maintainability and style management.
+- Enabled dark mode support with next-themes.
+- Added Sonner for toast notifications and user feedback.
+- Designed a responsive front page with an animated InfiniteScroll image slider, optimized for desktop and hidden on mobile.
+- Ensured accessibility and performance best practices throughout the application.
+- Structured the codebase for scalability, with clear separation of components, hooks, and API logic.
 
 ## 🚀 Technologies
 
