@@ -101,5 +101,3 @@ npm run start
   - Set environment variables for Supabase (URL, anon/service keys) and Stripe (public key, secret key, webhook secret)
   - Configure the Stripe webhook to point to `/api/stripe-webhook`
   - Trigger a deploy; Vercel handles Next.js output automatically
-
-If you need detailed environment variable names and values, check your `.env` file and mirror those in the hosting platform.
