@@ -1,67 +1,105 @@
 # Strada
 
-- Developed a modern web application using Next.js 15.3.3 and React 19.
-- Integrated Supabase as the backend database and authentication provider.
-- Utilized Tailwind CSS for responsive and utility-first styling.
-- Implemented a modular UI with Radix UI components, including Accordion, Dialog, Dropdown, Tabs, Tooltip, and more.
-- Incorporated Lucide React for iconography and React Day Picker for date selection.
-- Integrated Vaul for advanced drawer components.
-- Employed utility libraries such as date-fns, class-variance-authority, clsx, and tailwind-merge for enhanced code maintainability and style management.
-- Enabled dark mode support with next-themes.
-- Added Sonner for toast notifications and user feedback.
-- Designed a responsive front page with an animated InfiniteScroll image slider, optimized for desktop and hidden on mobile.
-- Ensured accessibility and performance best practices throughout the application.
-- Structured the codebase for scalability, with clear separation of components, hooks, and API logic.
+A modern vehicle rental platform. Strada is a contemporary, performance-focused rental experience built with the React/Next.js ecosystem and a responsive Tailwind CSS UI. It delivers seamless vehicle discovery, booking management, and profile experiences while showcasing strong component architecture and responsive design best practices.
 
-## 🚀 Technologies
+## What the site does
 
-- **Framework:** Next.js 15.3.3
-- **Language:** JavaScript/React 19
-- **Database:** Supabase
-- **Styling:** Tailwind CSS
-- **UI Components:** 
-  - Radix UI (Accordion, Dialog, Dropdown, etc.)
-  - Lucide React (Icons)
-  - React Day Picker
-  - Vaul (Drawer components)
-- **Utilities:**
-  - date-fns
-  - class-variance-authority
-  - clsx
-  - tailwind-merge
-  - next-themes (Dark mode support)
-  - Sonner (Toast notifications)
+- Vehicle discovery with rich visuals and responsive layouts
+- Secure sign in/sign up and session handling
+- Booking flow with checkout integration
+- User profile management and order history
+- Admin tools for products and orders (private routes)
 
-## 🛠️ Development
+## Why this is useful
 
-First, run the development server:
+- Streamlines renting vehicles with a clear, mobile-first UX
+- Reduces operational overhead via admin workflows (add product, manage orders)
+- Built with modern web practices for speed, accessibility, and maintainability
+- Scales easily thanks to modular components and clear separation of concerns
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Tech stack
+
+- Framework: Next.js 15 and React 19
+- Styling: Tailwind CSS, custom UI primitives
+- Authentication/DB: Supabase
+- Payments: Stripe (checkout + webhook routes)
+- Utilities: date-fns, clsx, tailwind-merge, class-variance-authority, next-themes, Sonner
+
+## Features
+
+- Responsive landing page with animated media and modern typography
+- Auth pages (login/signup) and protected app sections
+- Product/vehicle listing pages and detail-driven components
+- Booking workflow with Stripe checkout session and webhook handling
+- Admin dashboard: add product, manage orders, overview metrics
+- Reusable UI components (buttons, inputs, tables, tabs, etc.)
+
+## Project structure
+
+```text
+src/
+  app/
+    (private)/
+      admin/
+        activeOrders/
+        addProduct/
+        allOrders/
+        dashboard/
+      bookings/
+      dashboard/
+      order/
+      product/
+      profile/
+      vehicles/
+    api/
+      create-checkout-session/
+      stripe-webhook/
+    auth/
+    ClientLayout.js
+    globals.css
+    layout.jsx
+    page.jsx
+  components/
+    auth/
+    context/
+    ui/
+    Navbar.jsx
+    Footer.jsx
+    VehicleCard.jsx
+  hooks/
+  lib/
+public/
+  sliderImages/
+  logo.png
+  logoBlack.png
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-## 📦 Build
+```bash
+npm install
+npm run dev
+# open http://localhost:3000
+```
+
+### Build
 
 ```bash
 npm run build
-# or
-yarn build
-# or
-pnpm build
 ```
 
-## 🚀 Production
+### Run production locally
 
 ```bash
 npm run start
-# or
-yarn start
-# or
-pnpm start
 ```
+
+## Deployment
+
+- Recommended: Vercel
+  - Push to GitHub and import the repo on Vercel
+  - Set environment variables for Supabase (URL, anon/service keys) and Stripe (public key, secret key, webhook secret)
+  - Configure the Stripe webhook to point to `/api/stripe-webhook`
+  - Trigger a deploy; Vercel handles Next.js output automatically
+
+If you need detailed environment variable names and values, check your `.env` file and mirror those in the hosting platform.
